@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PolyGlot - Apprentissage & Traduction</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-language"></i>
+      <span>PolyGlot</span>
+    </div>
+    <div class="nav-controls">
+      <button id="pwa-install-btn" class="btn-install hidden">
+        <i class="fa-solid fa-download"></i> Installer App
+      </button>
+      <div class="streak-badge">
+        <i class="fa-solid fa-fire"></i>
+        <span id="streak-count">1</span> jours
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+    
+    <!-- Tab Navigation -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="translator">
+        <i class="fa-solid fa-comments"></i> Traducteur
+      </button>
+      <button class="tab-btn" data-tab="learning">
+        <i class="fa-solid fa-graduation-cap"></i> Apprendre
+      </button>
+      <button class="tab-btn" data-tab="stats">
+        <i class="fa-solid fa-chart-line"></i> Progrès
+      </button>
+    </nav>
+
+    <!-- SECTION 1: TRADUCTEUR MULTILINGUE -->
+    <section id="translator" class="tab-content active">
+      <div class="card translator-card">
+        <h2><i class="fa-solid fa-arrow-right-arrow-left"></i> Traducteur Instantané</h2>
+        
+        <!-- Language Selectors -->
+        <div class="lang-selector-bar">
+          <select id="source-lang" class="lang-select">
+            <option value="fr-FR" selected>🇫🇷 Français</option>
+            <option value="en-US">🇬🇧 Anglais</option>
+            <option value="de-DE">🇩🇪 Allemand</option>
+            <option value="es-ES">🇪🇸 Espagnol</option>
+            <option value="zh-CN">🇨🇳 Chinois</option>
+          </select>
+
+          <button id="swap-langs" class="icon-btn-circle" title="Échanger les langues">
+            <i class="fa-solid fa-repeat"></i>
+          </button>
+
+          <select id="target-lang" class="lang-select">
+            <option value="es-ES" selected>🇪🇸 Espagnol</option>
+            <option value="zh-CN">🇨🇳 Chinois</option>
+            <option value="fr-FR">🇫🇷 Français</option>
+            <option value="en-US">🇬🇧 Anglais</option>
+            <option value="de-DE">🇩🇪 Allemand</option>
+          </select>
+        </div>
+
+        <!-- Source Text / Voice Input -->
+        <div class="input-group">
+          <textarea id="source-text" placeholder="Écrivez ou appuyez sur le micro pour parler..."></textarea>
+          <div class="input-actions">
+            <button id="mic-btn" class="btn-action mic"><i class="fa-solid fa-microphone"></i> Parler</button>
+            <button id="clear-btn" class="btn-action-secondary"><i class="fa-solid fa-trash-can"></i> Effacer</button>
+          </div>
+        </div>
+
+        <!-- Filter Badge Notification -->
+        <div id="filter-tag" class="filter-badge hidden">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Voix nettoyée (hésitations & répétitions supprimées)
+        </div>
+
+        <!-- Translate Action Button -->
+        <button id="translate-btn" class="btn-primary">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Traduire
+        </button>
+
+        <!-- Translation Result Box -->
+        <div class="output-group hidden" id="output-box">
+          <div class="output-header">
+            <span>Résultat</span>
+            <button id="speak-target-btn" class="icon-btn" title="Écouter la prononciation">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div id="target-text" class="result-text">---</div>
+          
+          <!-- Special Chinese Section (Pinyin & Hanzi breakdown) -->
+          <div id="pinyin-box" class="pinyin-container hidden">
+            <span class="pinyin-label"><i class="fa-solid fa-font"></i> Pinyin (Phonétique) :</span>
+            <span id="pinyin-text" class="pinyin-content"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: MODULE D'APPRENTISSAGE -->
+    <section id="learning" class="tab-content">
+      <div class="learning-header">
+        <h2><i class="fa-solid fa-book-open"></i> Révision & Vocabulaire</h2>
+        <div class="target-toggle">
+          <button class="lang-toggle-btn active" data-target="es">🇪🇸 Espagnol</button>
+          <button class="lang-toggle-btn" data-target="zh">🇨🇳 Chinois</button>
+        </div>
+      </div>
+
+      <!-- Flashcards Carousel / Deck -->
+      <div class="flashcard-wrapper">
+        <div class="flashcard" id="flashcard">
+          <div class="card-front">
+            <span class="card-tag" id="card-category">Salutations</span>
+            <h3 id="card-original">Bonjour</h3>
+            <p class="tap-hint"><i class="fa-solid fa-hand-pointer"></i> Touchez pour révéler la traduction</p>
+          </div>
+          <div class="card-back">
+            <h3 id="card-translated">¡Hola!</h3>
+            <p id="card-pinyin-back" class="pinyin-sub hidden">Hǎoxiǎ</p>
+            <button id="card-audio-btn" class="icon-btn-circle"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard-controls">
+        <button id="prev-card" class="btn-secondary"><i class="fa-solid fa-chevron-left"></i> Précédent</button>
+        <span id="card-counter">1 / 5</span>
+        <button id="next-card" class="btn-primary">Suivant <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <!-- SECTION 3: TABLEAU DE BORD STATS -->
+    <section id="stats" class="tab-content">
+      <div class="card stats-card">
+        <h2><i class="fa-solid fa-trophy"></i> Votre Progression</h2>
+        
+        <div class="stats-grid">
+          <div class="stat-box">
+            <i class="fa-solid fa-bolt stat-icon xp"></i>
+            <span class="stat-val" id="xp-count">120</span>
+            <span class="stat-lbl">Points XP</span>
+          </div>
+          <div class="stat-box">
+            <i class="fa-solid fa-check-double stat-icon words"></i>
+            <span class="stat-val" id="words-count">24</span>
+            <span class="stat-lbl">Mots Maîtrisés</span>
+          </div>
+          <div class="stat-box">
+            <i class="fa-solid fa-wifi stat-icon status"></i>
+            <span class="stat-val" id="net-status">En ligne</span>
+            <span class="stat-lbl">Mode Réseau</span>
+          </div>
+        </div>
+
+        <div class="offline-info-banner">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <strong>100% Fonctionnel Hors-Ligne (PWA)</strong>
+            <p>Toutes vos données de révision et l'interface sont sauvegardées en local sur votre téléphone.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker enregistré !'))
+          .catch(err => console.error('Erreur SW:', err));
+      });
+    }
+  </script>
+</body>
+</html>
